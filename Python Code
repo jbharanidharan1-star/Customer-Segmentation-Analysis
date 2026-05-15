@@ -1,0 +1,281 @@
+# Customer Segmentation Analysis -  Python Code 🚀
+
+```python
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+
+# =========================
+# Load Dataset
+# =========================
+
+# Replace with your file path
+file_path = r"C:\Users\purus\OneDrive\Documents\shopping_trends.csv"
+
+# Read CSV file
+df = pd.read_csv(file_path)
+
+# Display first 5 rows
+print("\nDataset Preview:\n")
+print(df.head())
+
+
+# =========================
+# Data Cleaning
+# =========================
+
+# Convert columns to numeric
+numeric_columns = [
+    "Purchase_Amount_USD",
+    "Review_Rating",
+    "Age",
+    "Previous_Purchases"
+]
+
+for col in numeric_columns:
+    df[col] = pd.to_numeric(df[col], errors="coerce")
+
+# Remove missing values
+df = df.dropna(subset=numeric_columns)
+
+
+# =========================
+# Task 1 - Category Analysis
+# =========================
+
+print("\nRevenue by Category:\n")
+category_sales = (
+    df.groupby("Category")["Purchase_Amount_USD"]
+    .sum()
+    .sort_values()
+)
+print(category_sales)
+
+print("\nAverage Rating by Category:\n")
+category_rating = (
+    df.groupby("Category")["Review_Rating"]
+    .mean()
+    .sort_values()
+)
+print(category_rating)
+
+
+# =========================
+# Age Group Analysis
+# =========================
+
+# Create age groups
+df["Age_Group"] = pd.cut(
+    df["Age"],
+    bins=[0, 18, 25, 35, 50, 100],
+    labels=["Teen", "Young Adult", "Adult", "Middle Age", "Senior"]
+)
+
+print("\nSpending by Age Group:\n")
+age_spending = (
+    df.groupby("Age_Group")["Purchase_Amount_USD"]
+    .sum()
+    .sort_values()
+)
+print(age_spending)
+
+
+# =========================
+# Seasonal Analysis
+# =========================
+
+print("\nRevenue by Season:\n")
+season_spending = (
+    df.groupby("Season")["Purchase_Amount_USD"]
+    .sum()
+    .sort_values()
+)
+print(season_spending)
+
+
+# =========================
+# Location Analysis
+# =========================
+
+print("\nRevenue by Location:\n")
+location_spending = (
+    df.groupby("Location")["Purchase_Amount_USD"]
+    .sum()
+    .sort_values()
+)
+print(location_spending)
+
+
+# =========================
+# Clustering Preparation
+# =========================
+
+features = df[[
+    "Age",
+    "Purchase_Amount_USD",
+    "Review_Rating",
+    "Previous_Purchases"
+]]
+
+# Scale the data
+scaler = StandardScaler()
+scaled_features = scaler.fit_transform(features)
+
+print("\nScaled Feature Sample:\n")
+print(scaled_features[:5])
+
+
+# =========================
+# Elbow Method
+# =========================
+
+wcss = []
+
+for i in range(1, 11):
+    kmeans = KMeans(n_clusters=i, random_state=42)
+    kmeans.fit(scaled_features)
+    wcss.append(kmeans.inertia_)
+
+print("\nWCSS Values:\n")
+print(wcss)
+
+
+# =========================
+# Apply KMeans Clustering
+# =========================
+
+kmeans = KMeans(n_clusters=4, random_state=42)
+
+# Create cluster column
+df["Cluster"] = kmeans.fit_predict(scaled_features)
+
+print("\nClustered Data Preview:\n")
+print(df[["Age", "Purchase_Amount_USD", "Cluster"]].head())
+
+
+# =========================
+# Cluster Summary
+# =========================
+
+print("\nCluster Summary:\n")
+cluster_summary = df.groupby("Cluster")[[
+    "Age",
+    "Purchase_Amount_USD",
+    "Review_Rating",
+    "Previous_Purchases"
+]].mean()
+
+print(cluster_summary)
+```
+
+---
+
+# Why This Version is Better ✅
+
+* Cleaner structure
+* Professional comments
+* Removed duplicate code
+* Easier to understand
+* GitHub-ready
+* Interview-ready
+
+---
+
+# How to Upload to GitHub 🚀
+
+## Step 1: Create a GitHub Account
+
+Go to:
+[https://github.com](https://github.com)
+
+---
+
+## Step 2: Create New Repository
+
+Click:
+
+* New Repository
+
+Repository Name:
+
+```text
+customer-segmentation-analysis
+```
+
+Select:
+
+* Public ✅
+
+Click:
+
+* Create Repository
+
+---
+
+# Step 3: Create Project Folder
+
+Inside your folder add:
+
+* Python code (.py)
+* Power BI file
+* PPT
+* Dashboard screenshots
+* README.md
+
+---
+
+# Step 4: Upload Files
+
+Inside GitHub repository:
+
+Click:
+
+```text
+Add file → Upload files
+```
+
+Drag and drop all files.
+
+Then click:
+
+```text
+Commit changes
+```
+
+---
+
+# Files Recommended for Upload 📂
+
+```text
+customer_segmentation.py
+customer_segmentation_dashboard.pbix
+customer_segmentation_presentation.pptx
+README.md
+Dashboard_Screenshot.png
+```
+
+---
+
+# Important Tip 💡
+
+Do NOT upload:
+
+* .venv folder
+* Large unnecessary files
+* Personal information
+
+---
+
+# Recommended GitHub Repository Description
+
+```text
+Customer Segmentation and Shopping Trend Analysis using Python, Machine Learning, and Power BI.
+```
+
+---
+
+# Recommended Resume Project Title 💼
+
+```text
+Customer Segmentation & Shopping Trend Analysis using Python and Power BI
+```
